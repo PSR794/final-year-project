@@ -31,3 +31,21 @@ export TURTLEBOT3_MODEL=burger
 ```
 roslaunch hector_quadrotor_gazebo quadrotor_empty_world.launch
 ```
+### Installing RTAB 
+1. Install RTAB-Map standalone libraries. Do not clone in your Catkin workspace.
+```
+cd ~
+git clone https://github.com/introlab/rtabmap.git rtabmap
+cd rtabmap/build
+cmake ..
+make -j6
+sudo make install
+```
+2. Install RTAB-Map ros-pkg in your src folder of your Catkin workspace.
+```
+$ cd ~/catkin_ws/src
+$ git clone https://github.com/introlab/rtabmap_ros.git 
+$ catkin_make -j4
+```
+Use catkin_make -j1 if compilation requires more RAM than you have (e.g., some files require up to ~2 GB to build depending on gcc version).
+
