@@ -43,9 +43,15 @@ sudo make install
 ```
 2. Install RTAB-Map ros-pkg in your src folder of your Catkin workspace.
 ```
-$ cd ~/catkin_ws/src
-$ git clone https://github.com/introlab/rtabmap_ros.git 
-$ catkin_make -j4
+cd ~/catkin_ws/src
+git clone https://github.com/introlab/rtabmap_ros.git 
+catkin_make -j4
 ```
 Use catkin_make -j1 if compilation requires more RAM than you have (e.g., some files require up to ~2 GB to build depending on gcc version).
-
+### Running RTAB Mapping
+Launch the following in different terminals
+```
+roslaunch hector_quadrotor_demo outdoor_flight_gazebo.launch
+rosrun hector_ui ui_hector_quad.py
+roslaunch rtabmap_ros rgbd_mapping.launch
+```
