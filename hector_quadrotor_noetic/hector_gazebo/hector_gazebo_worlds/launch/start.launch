@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="world" default="worlds/empty.world"/>
+  <arg name="world" default="worlds/my_world.world"/>
   <arg name="gui" default="true"/>
   <arg name="args" default=""/>
   
