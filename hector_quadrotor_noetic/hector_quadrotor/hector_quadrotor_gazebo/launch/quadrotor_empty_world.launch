@@ -1,33 +1,19 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="paused" default="false"/>
-  <arg name="use_sim_time" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="headless" default="false"/>
-  <arg name="debug" default="false"/>
-  <!-- <arg name="turtlebot_model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/> -->
-  <!-- <arg name="model" default="$(env burger)" doc="model type [burger, waffle, waffle_pi]"/> -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="turtlebot"  default="tbot"/>
+  <arg name="quadrotor" default="drone"/>
 
-
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="paused" value="$(arg paused)"/>
-    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-    <arg name="gui" value="$(arg gui)"/>
-    <arg name="headless" value="$(arg headless)"/>
-    <arg name="debug" value="$(arg debug)"/>
-  </include>
-
-  <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch" />
-    <arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_hokuyo_utm30lx.gazebo.xacro"/> 
-
-  <!-- <arg name="tb_model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
-  <arg name="turtlebot"  default="tb"/>
   <arg name="turtlebot_x_pos" default="1.0"/>
   <arg name="turtlebot_y_pos" default="1.0"/>
-  <arg name="turtlebot_z_pos" default="0.0"/>
+  <arg name="turtlebot_z_pos" default=" 0.3"/>
+  <!-- <arg name="tbot_yaw"   default=" 1.57"/> -->
+
+<include file="$(find hector_gazebo_worlds)/launch/start.launch"/>
+
   <group ns = "$(arg turtlebot)">
-    <param name="robot_description" command="$(find xacro)/xacro inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg tb_model).urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -35,8 +21,13 @@
     </node>
     
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg turtlebot) -x $(arg turtlebot_x_pos) -y $(arg turtlebot_y_pos) -z $(arg turtlebot_z_pos) -param robot_description" />
-  </group>  -->
+  </group>
 
-
-
-</launch> 
+  <group ns = "$(arg quadrotor)">
+  <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch" >
+    <arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_with_asus_with_hokuyo_utm30lx.gazebo.xacro"/> 
+    <arg name="tf_prefix" value="$(arg quadrotor)"/> 
+  </include>
+  </group>
+<!-- <include file="$(find turtlebot3_teleop)/launch/spawn_quadrotor.launch" > -->
+</launch>
