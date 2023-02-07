@@ -25,7 +25,7 @@ class turtlebot3:
 
 
         self.wheel_mode_time = 3.25 # secs            
-        self.publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+        self.publisher = rospy.Publisher('/tbot/cmd_vel', Twist, queue_size=10)
         self.rate = rospy.Rate(100)
         self.speed = Twist()
     # def torque_callback(self, data):

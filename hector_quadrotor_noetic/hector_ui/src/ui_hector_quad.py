@@ -67,13 +67,13 @@ def rot_callback(data):
 
 rospy.init_node('HectorQ_GUI', anonymous=False)
 #Subscribers
-posicionLider_sub = rospy.Subscriber("/ground_truth/state", Odometry , pose_callback)
-orientaLider_sub = rospy.Subscriber("/ground_truth_to_tf/pose", PoseStamped , rot_callback)
+posicionLider_sub = rospy.Subscriber("/drone/ground_truth/state", Odometry , pose_callback)
+orientaLider_sub = rospy.Subscriber("/drone/ground_truth_to_tf/pose", PoseStamped , rot_callback)
 
 #Publishers
-takeoff_pub = rospy.Publisher('/ardrone/takeoff', Empty, queue_size=1)
-land_pub = rospy.Publisher('/ardrone/land', Empty, queue_size=1)
-vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+takeoff_pub = rospy.Publisher('/drone/ardrone/takeoff', Empty, queue_size=1)
+land_pub = rospy.Publisher('/drone/ardrone/land', Empty, queue_size=1)
+vel_pub = rospy.Publisher('/drone/cmd_vel', Twist, queue_size=1)
 
 def setText(text):
     ttk.Label(mainframe, text="              ").grid(column=3, row=1, sticky=tk.W)
