@@ -8,12 +8,14 @@
   <arg name="turtlebot_x_pos" default="1.0"/>
   <arg name="turtlebot_y_pos" default="1.0"/>
   <arg name="turtlebot_z_pos" default=" 0.3"/>
+  <arg name="world_frame" default="/world"/>
+  <arg name="use_ground_truth_for_tf" default="true" />
   <!-- <arg name="tbot_yaw"   default=" 1.57"/> -->
 
 <include file="$(find hector_gazebo_worlds)/launch/start.launch"/>
 
   <group ns = "$(arg turtlebot)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro world_frame:=$(arg world_frame)"/>
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
       <param name="publish_frequency" type="double" value="50.0" />
@@ -21,6 +23,12 @@
     </node>
     
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg turtlebot) -x $(arg turtlebot_x_pos) -y $(arg turtlebot_y_pos) -z $(arg turtlebot_z_pos) -param robot_description" />
+    <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
+    <param name="odometry_topic" value="ground_truth/state" />
+    <param name="frame_id" value="/$(arg world_frame)" />
+    <param name="tf_prefix" value="$(arg turtlebot)" if="$(arg use_ground_truth_for_tf)" />
+    <param name="tf_prefix" value="$(arg turtlebot)/ground_truth" unless="$(arg use_ground_truth_for_tf)" />
+    </node>
   </group>
 
   <group ns = "$(arg quadrotor)">
@@ -29,5 +37,11 @@
     <arg name="tf_prefix" value="$(arg quadrotor)"/> 
   </include>
   </group>
+  <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find hector_quadrotor_demo)/rviz_cfg/combined_rviz.rviz" />
+
 <!-- <include file="$(find turtlebot3_teleop)/launch/spawn_quadrotor.launch" > -->
 </launch>
