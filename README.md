@@ -48,3 +48,27 @@ $ git clone https://github.com/introlab/rtabmap_ros.git
 $ catkin_make -j4
 ```
 Use catkin_make -j1 if compilation requires more RAM than you have (e.g., some files require up to ~2 GB to build depending on gcc version).
+
+### AMCL
+```
+$ roslaunch hector_quadrotor_gazebo tbot_amcl.launch 
+``` 
+Launch the same file above for simultaenous simulation
+
+For teleop 
+```
+$ rosrun turtlebot3_gazebo tutb_teleop.py
+```
+
+For Loading Map
+```
+$ cd FYP/src/map
+$ rosrun map_server map_server drone_map.yaml
+```
+If AMCL gives error of not receiving the scans from the LiDAR of tbot then you have to change these files :
+1. in `/opt/ros/noetic/share/turtlebot3_description/urdf/turtlebot3_burger.gazebo.xacro` line 102 change name to `laser`, 
+line 129 change topic name to `tbot/scan`, line 130 change frameName to `/tbot/laser`.
+
+2. in `/opt/ros/noetic/share/turtlebot3_description/urdf/turtlebot3_burger.urdf.xacro` line 140 change link name to `laser`.
+
+
