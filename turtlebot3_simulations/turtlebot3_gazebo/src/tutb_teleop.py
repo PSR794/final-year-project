@@ -44,7 +44,7 @@ class turtlebot3:
                 print('Moving Forward')
                 self.now = rospy.get_rostime()
 
-                self.speed.linear.x  = 0.5
+                self.speed.linear.x  = 0.25
                 # self.speed.angular.z  = 0.0
                 self.publisher.publish(self.speed) # RPM          
                 self.rate.sleep()
@@ -71,7 +71,7 @@ class turtlebot3:
                 print('Moving back')
                 self.now = rospy.get_rostime()
 
-                self.speed.linear.x = -0.5
+                self.speed.linear.x = -0.25
                 self.speed.angular.z  = 0.0
                 self.publisher.publish(self.speed) # RPM                
                 self.rate.sleep()
